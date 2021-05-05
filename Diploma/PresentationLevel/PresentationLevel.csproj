@@ -119,30 +119,43 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\GeneralNavigationPage.xaml.cs">
+    <Compile Include="Mappers\IMapper.cs" />
+    <Compile Include="Mappers\Mapper.cs" />
+    <Compile Include="Models\ProblemResult.cs" />
+    <Compile Include="Services\IResearch.cs" />
+    <Compile Include="Services\Research.cs" />
+    <Compile Include="ViewModels\NewProblemInputViewModel.cs" />
+    <Compile Include="ViewModels\NewResearchInputViewModel.cs" />
+    <Compile Include="Views\GeneralNavigationPage.xaml.cs">
       <DependentUpon>GeneralNavigationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\LogIn.xaml.cs">
+    <Compile Include="Views\LogIn.xaml.cs">
       <DependentUpon>LogIn.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\MainPage.xaml.cs">
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\MyProblems\MyProblemsListPage.xaml.cs">
+    <Compile Include="Views\MyProblems\MyProblemsListPage.xaml.cs">
       <DependentUpon>MyProblemsListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\MyProblems\MyProblemsPage.xaml.cs">
+    <Compile Include="Views\MyProblems\MyProblemsPage.xaml.cs">
       <DependentUpon>MyProblemsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\MyProblems\NewProblemPage.xaml.cs">
+    <Compile Include="Views\MyProblems\NewProblemPage.xaml.cs">
       <DependentUpon>NewProblemPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\MyResearchesPage.xaml.cs">
-      <DependentUpon>MyResearchesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structs\ConstraintSymbolStruct.cs" />
     <Compile Include="Structs\OptimizationStruct.cs" />
+    <Compile Include="Views\MyResearches\MyResearchesListPage.xaml.cs">
+      <DependentUpon>MyResearchesListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyResearches\MyResearchesPage.xaml.cs">
+      <DependentUpon>MyResearchesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyResearches\NewResearchPage.xaml.cs">
+      <DependentUpon>NewResearchPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -166,6 +179,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>5.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
@@ -180,31 +196,27 @@
     <Folder Include="Enums\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Pages\GeneralNavigationPage.xaml">
+    <Page Include="Views\GeneralNavigationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\LogIn.xaml">
+    <Page Include="Views\LogIn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MainPage.xaml">
+    <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MyProblems\MyProblemsListPage.xaml">
+    <Page Include="Views\MyProblems\MyProblemsListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MyProblems\MyProblemsPage.xaml">
+    <Page Include="Views\MyProblems\MyProblemsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MyProblems\NewProblemPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\MyResearchesPage.xaml">
+    <Page Include="Views\MyProblems\NewProblemPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -212,6 +224,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\MyResearches\MyResearchesListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyResearches\MyResearchesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyResearches\NewResearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProblemSolver\ProblemSolver.csproj">
+      <Project>{9e4e0d90-83a7-47b3-aa6b-62190ff93b44}</Project>
+      <Name>ProblemSolver</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

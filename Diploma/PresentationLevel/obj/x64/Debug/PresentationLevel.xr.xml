@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Roots >
+  <Roots.PropertyPathNames>
+    <RootPropertyPathName Name="ProblemSolution" />
+    <RootPropertyPathName Name="ResearchResult" />
+  </Roots.PropertyPathNames>
   <Roots.RootTypes>
     <RootType FullName="Windows.UI.Xaml.Application">
       <RootProperty Name="Resources" />
@@ -113,15 +117,18 @@
       <RootProperty Name="SelectedIndex" />
       <RootProperty Name="Items" />
     </RootType>
+    <RootType FullName="Windows.UI.Xaml.Data.Binding" />
     <RootType FullName="Windows.UI.Xaml.Controls.SymbolIcon">
       <RootProperty Name="Symbol" />
     </RootType>
     <RootType FullName="System.String" />
     <RootType FullName="PresentationLevel.Pages.MyProblems.NewProblemPage" />
-    <RootType FullName="PresentationLevel.Pages.MyResearchesPage" />
     <RootType FullName="Windows.UI.Xaml.Setter">
       <RootProperty Name="Property" />
       <RootProperty Name="Value" />
     </RootType>
+    <RootType FullName="PresentationLevel.Views.MyResearches.MyResearchesListPage" />
+    <RootType FullName="PresentationLevel.Views.MyResearches.MyResearchesPage" />
+    <RootType FullName="PresentationLevel.Views.MyResearches.NewResearchPage" />
   </Roots.RootTypes>
 </Roots>

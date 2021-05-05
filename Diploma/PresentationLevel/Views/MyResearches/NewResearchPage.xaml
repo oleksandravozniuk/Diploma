@@ -1,0 +1,59 @@
+﻿<Page
+    x:Class="PresentationLevel.Views.MyResearches.NewResearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PresentationLevel.Views.MyResearches"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel Margin="5,0,0,0">
+            <TextBlock Text="Кількість змінних"></TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="XCount">0</TextBlock>
+                <Button x:Name="IncrementX" Click="IncrementX_Click">
+                    <SymbolIcon Symbol="Add" />
+                </Button>
+                <Button x:Name="DecrementX" Click="DecrementX_Click">
+                    <SymbolIcon Symbol="Remove" />
+                </Button>
+            </StackPanel>
+            <ComboBox x:Name="OptDirectionComboBox" Header="Напрямок оптимізації" Width="200" SelectedIndex="0">
+                <x:String>Max</x:String>
+                <x:String>Min</x:String>
+            </ComboBox>
+            <StackPanel x:Name="EnumeratorStackPanel" Orientation="Horizontal">
+                <TextBlock x:Name="EnumeratorTitle"></TextBlock>
+                <TextBlock x:Name="EnumeratorCount"></TextBlock>
+                <Button x:Name="IncreaseEnumeratorCountButton" Click="IncreaseEnumeratorCount_Click" Visibility="Collapsed">
+                    <SymbolIcon Symbol="Add" />
+                </Button>
+                <Button x:Name="DecreaseEnumeratorCountButton" Click="DecreaseEnumeratorCount_Click" Visibility="Collapsed">
+                    <SymbolIcon Symbol="Remove" />
+                </Button>
+            </StackPanel>
+            <StackPanel x:Name="Enumerators" Orientation="Vertical"></StackPanel>
+            <TextBlock x:Name="DenominatorTitle"></TextBlock>
+            <StackPanel x:Name="Denominators" Orientation="Horizontal"></StackPanel>
+            <StackPanel x:Name="ConstraintStackPanel" Orientation="Horizontal">
+                <TextBlock x:Name="ConstraintTitle"></TextBlock>
+                <TextBlock x:Name="ConstraintCount"></TextBlock>
+                <Button x:Name="IncreaseConstraintCountButton" Click="IncreaseConstraintCount_Click" Visibility="Collapsed">
+                    <SymbolIcon Symbol="Add" />
+                </Button>
+                <Button x:Name="DecreaseConstraintCountButton" Click="DecreaseConstraintCount_Click" Visibility="Collapsed">
+                    <SymbolIcon Symbol="Remove" />
+                </Button>
+            </StackPanel>
+            <StackPanel x:Name="Constraints" Orientation="Vertical"></StackPanel>
+            <TextBlock x:Name="WeightsTitle"></TextBlock>
+            <StackPanel x:Name="Ws" Orientation="Vertical"></StackPanel>
+            <TextBlock x:Name="LsTitle"></TextBlock>
+            <StackPanel x:Name="Ls" Orientation="Vertical"></StackPanel>
+            <Button x:Name="ResearchButton" Visibility="Collapsed" Click="Research_Click">Дослідити</Button>
+            <TextBlock x:Name="ResearchResultTextBlock" Text="{Binding ResearchResult}"></TextBlock>
+        </StackPanel>
+    </Grid>
+</Page>

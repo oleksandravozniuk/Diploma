@@ -1,4 +1,7 @@
-﻿using PresentationLevel.Pages;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PresentationLevel.Mappers;
+using PresentationLevel.Pages;
+using ProblemSolver;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,6 +34,19 @@ namespace PresentationLevel
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            Container = ConfigureDependencyInjection();
+        }
+
+        public IServiceProvider Container { get; }
+
+        IServiceProvider ConfigureDependencyInjection()
+        {
+            var serviceCollection = new ServiceCollection();
+
+            serviceCollection.AddTransient<IMapper, Mapper>();
+            serviceCollection.AddTransient<ISolveHelper, SolveHelper>();
+
+            return serviceCollection.BuildServiceProvider();
         }
 
         /// <summary>
