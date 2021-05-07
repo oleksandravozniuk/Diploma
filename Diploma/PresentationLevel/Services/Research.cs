@@ -1,9 +1,7 @@
 ﻿using ProblemSolver;
+using ProblemSolver.Enums;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PresentationLevel.Services
 {
@@ -15,9 +13,13 @@ namespace PresentationLevel.Services
             _solveHelper = solveHelper;
         }
 
-        public List<int> GetDeltas()
-        {
+        //public List<int> GetDeltas(List<List<double>> numerators, List<double> denominator, List<Constraint> _constraints, Tuple<List<double>, double> ls, Tuple<List<double>, double> ws, OptDirectionEnum _optDirection, int problemsCount = 100)
+        //{
+        //    var deltas = new List<int>();
+        //    for(int i = 0; i<problemsCount; i++)
+        //    {
 
-        }
+        //    }
+        //}
     }
 }

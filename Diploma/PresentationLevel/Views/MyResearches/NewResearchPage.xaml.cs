@@ -243,21 +243,21 @@ namespace PresentationLevel.Views.MyResearches
             return constraintsList;
         }
 
-        private List<double> GetInputWs()
+        private List<Tuple<double, double>> GetInputWs()
         {
-            var wsList = new List<double>();
+            var wsList = new List<Tuple<double,double>>();
             foreach (var element in Ws.Children)
             {
-                wsList.Add(double.Parse(((TextBox)element).Text));
+                wsList.Add(new Tuple<double,double>(double.Parse(((TextBox)((StackPanel)element).Children[0]).Text), double.Parse(((TextBox)((StackPanel)element).Children[1]).Text)));
             }
             return wsList;
         }
-        private List<double> GetInputLs()
+        private List<Tuple<double, double>> GetInputLs()
         {
-            var lsList = new List<double>();
+            var lsList = new List<Tuple<double, double>>();
             foreach (var element in Ws.Children)
             {
-                lsList.Add(double.Parse(((TextBox)element).Text));
+                lsList.Add(new Tuple<double, double>(double.Parse(((TextBox)((StackPanel)element).Children[0]).Text), double.Parse(((TextBox)((StackPanel)element).Children[1]).Text)));
             }
             return lsList;
         }

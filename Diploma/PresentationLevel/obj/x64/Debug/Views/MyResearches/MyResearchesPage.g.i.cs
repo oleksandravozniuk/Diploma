@@ -17,6 +17,8 @@ namespace PresentationLevel.Views.MyResearches
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 10.0.18362.1")]
         private global::Windows.UI.Xaml.Controls.CommandBar commandBar; 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 10.0.18362.1")]
+        private global::Microsoft.UI.Xaml.Controls.TabView MyResearchesTabView; 
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 10.0.18362.1")]
         private global::Windows.UI.Xaml.Controls.Grid ShellTitlebarInset; 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 10.0.18362.1")]
         private global::Windows.UI.Xaml.Controls.Grid CustomDragRegion; 
