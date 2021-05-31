@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:local1="using:ProblemManager.Dtos"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.BottomAppBar>
@@ -21,6 +22,21 @@
                 <muxc:TabViewItem.IconSource>
                     <muxc:SymbolIconSource Symbol="Home" />
                 </muxc:TabViewItem.IconSource>
+                <muxc:TabViewItem.Content>
+                    <ScrollViewer>
+                        <ListView x:Name="MyProblemsList" Grid.Row="1" Margin="10,10,10,10" IsItemClickEnabled="True" SelectionMode="Single">
+                            <ListView.ItemTemplate>
+                                <DataTemplate  x:DataType="local1:IndividualProblemDto">
+                                    <StackPanel>
+                                        <TextBlock FontSize="16" Text="{x:Bind Name}" FontWeight="Bold"  />
+                                        <Button x:Name="MoreButton" Tag="{x:Bind Id}" Click="MoreButton_Click">Детальніше</Button>
+                                        <Button x:Name="DeleteButton" Tag="{x:Bind Id}" Click="DeleteButton_Click">Видалити</Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollViewer>
+                </muxc:TabViewItem.Content>
             </muxc:TabViewItem>
             <muxc:TabView.TabStripHeader>
                 <Grid x:Name="ShellTitlebarInset" Background="Transparent" />

@@ -1,4 +1,5 @@
-﻿using PresentationLevel.Views.MyResearches;
+﻿using PresentationLevel.Pages.MyProblems;
+using PresentationLevel.Views.MyResearches;
 using System;
 using System.Collections.Generic;
 using System.IO;

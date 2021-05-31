@@ -24,13 +24,13 @@
             <SplitView.Pane>
                 <ListBox x:ConnectionId='3' SelectionMode="Single"                                             Background="#1F2937">
                     <ListBoxItem x:ConnectionId='4' Name="Main">
-                        <TextBlock Text="Main Page"/>
+                        <TextBlock Text="Головна" Foreground="Azure"/>
                     </ListBoxItem>
                     <ListBoxItem x:ConnectionId='5' Name="MyProblems">
-                        <TextBlock Text="My Problems"/>
+                        <TextBlock Text="Мої задачі" Foreground="Azure"/>
                     </ListBoxItem>
                     <ListBoxItem x:ConnectionId='6' Name="MyResearches">
-                        <TextBlock Text="My Researches"/>
+                        <TextBlock Text="Мої дослідження" Foreground="Azure"/>
                     </ListBoxItem>
                 </ListBox>
             </SplitView.Pane>

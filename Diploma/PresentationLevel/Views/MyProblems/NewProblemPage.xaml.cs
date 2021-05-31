@@ -1,14 +1,19 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PresentationLevel.Structs;
 using PresentationLevel.ViewModels;
+using ProblemGenerator.Models.Distributions;
 using ProblemSolver;
 using ProblemSolver.Enums;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-
+using Windows.UI.Xaml.Documents;
 
 namespace PresentationLevel.Pages.MyProblems
 {
@@ -56,7 +61,11 @@ namespace PresentationLevel.Pages.MyProblems
                 Orientation = Orientation.Horizontal
             };
             IncreaseXCount(newStackPanel, int.Parse(XCount.Text));
+
             Enumerators.Children.Add(newStackPanel);
+
+            IncreaseXCount(Ws, 1);
+            IncreaseXCount(Ls, 1);
 
             EnumeratorCount.Text = Enumerators.Children.Count.ToString();
         }
@@ -64,6 +73,8 @@ namespace PresentationLevel.Pages.MyProblems
         {
             Enumerators.Children.Remove(Enumerators.Children.Last());
             EnumeratorCount.Text = Enumerators.Children.Count.ToString();
+            DecreaseXCount(Ws, 1);
+            DecreaseXCount(Ls, 1);
         }
         private void IncrementX_Click(object sender, RoutedEventArgs e)
         {
@@ -109,9 +120,6 @@ namespace PresentationLevel.Pages.MyProblems
                 IncreaseXCount((StackPanel)((StackPanel)constraint).Children.First(), 1);
             }
 
-            IncreaseXCount(Ws,1);
-            IncreaseXCount(Ls,1);
-
             var x = int.Parse(XCount.Text);
             if(x==0)
             {
@@ -120,6 +128,8 @@ namespace PresentationLevel.Pages.MyProblems
                 IncreaseConstraintCountButton.Visibility = Visibility.Visible;
                 DecreaseEnumeratorCountButton.Visibility = Visibility.Visible;
                 DecreaseConstraintCountButton.Visibility = Visibility.Visible;
+                IncreaseXCount(Ws, 1);
+                IncreaseXCount(Ls, 1);
             }
             XCount.Text = (x+1).ToString();
 
@@ -137,6 +147,8 @@ namespace PresentationLevel.Pages.MyProblems
                     IncreaseConstraintCountButton.Visibility = Visibility.Collapsed;
                     DecreaseEnumeratorCountButton.Visibility = Visibility.Collapsed;
                     DecreaseConstraintCountButton.Visibility = Visibility.Collapsed;
+                    DecreaseXCount(Ws, 1);
+                    DecreaseXCount(Ls, 1);
                 }
                 foreach(var enumerator in Enumerators.Children)
                 {
@@ -147,8 +159,7 @@ namespace PresentationLevel.Pages.MyProblems
                 {
                     DecreaseXCount((StackPanel)((StackPanel)constraint).Children.First(), 1);
                 }
-                DecreaseXCount(Ws,1);
-                DecreaseXCount(Ls,1);
+
                 XCount.Text = (x-1).ToString();
                 if(x-1 == 0)
                 {
@@ -172,11 +183,11 @@ namespace PresentationLevel.Pages.MyProblems
         }
         private void MakeTitlesVisible()
         {
-            EnumeratorTitle.Text = "Чисельник:";
-            DenominatorTitle.Text = "Знаменник";
-            ConstraintTitle.Text = "Обмеження:";
-            WeightsTitle.Text = "Ваги";
-            LsTitle.Text = "Ls";
+            EnumeratorTitle.Text = "Кількість альтернативних наборів коефіцієнтів чисельника:";
+            DenominatorTitle.Text = "Коефіцієнти знаменника";
+            ConstraintTitle.Text = "Обмеження задачі:";
+            WeightsTitle.Text = "Експертні вагові коефіцієнти";
+            LsTitle.Text = "Величина, що показує наскільки оптимальне значення часткової цільової функції може максимально відрізнятися від компромісного розв'язку";
             EnumeratorCount.Text = Enumerators.Children.Count.ToString();
             ConstraintCount.Text = Constraints.Children.Count.ToString();
         }
@@ -194,6 +205,7 @@ namespace PresentationLevel.Pages.MyProblems
         private void Solve_Click(object sender, RoutedEventArgs e)
         {
             SolutionTextBlock.Text = _viewModel.SetProblemResult(GetInputEnumerators(), GetInputDenominator(), GetInputConstraints(), GetInputWs(), GetInputLs(), GetOptDirecton());
+            ResultsSaveStackPanel.Visibility = Visibility.Visible;
         }
 
         private List<List<double>> GetInputEnumerators()
@@ -253,7 +265,7 @@ namespace PresentationLevel.Pages.MyProblems
         private List<double> GetInputLs()
         {
             var lsList = new List<double>();
-            foreach (var element in Ws.Children)
+            foreach (var element in Ls.Children)
             {
                 lsList.Add(double.Parse(((TextBox)element).Text));
             }
@@ -273,6 +285,120 @@ namespace PresentationLevel.Pages.MyProblems
                 case ">=": return SymbolEnum.MoreOrEqual;
                 default: throw new Exception("Symbol was not defined");
             }
+        }
+
+        private void TypeOfInput_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = TypeOfInput.SelectedIndex;
+            switch (index)
+            {
+                case 0:
+                    ManualInput.Visibility = Visibility.Visible;
+                    RandomInput.Visibility = Visibility.Collapsed;
+                    break;
+                case 1:
+                    ManualInput.Visibility = Visibility.Collapsed;
+                    RandomInput.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    ManualInput.Visibility = Visibility.Visible;
+                    RandomInput.Visibility = Visibility.Collapsed;
+                    break;
+            }
+            ResultsSaveStackPanel.Visibility = Visibility.Collapsed;
+            SolutionTextBlock.Text = string.Empty;
+        }
+
+        private void DistributionType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(BetaParameters != null)
+            {
+                int index = DistributionType.SelectedIndex;
+                switch (index)
+                {
+                    case 0:
+                        BetaParameters.Visibility = Visibility.Visible;
+                        ChiParameters.Visibility = Visibility.Collapsed;
+                        GammaParameters.Visibility = Visibility.Collapsed;
+                        NormalParameters.Visibility = Visibility.Collapsed;
+                        UniformParameters.Visibility = Visibility.Collapsed;
+                        break;
+                    case 1:
+                        BetaParameters.Visibility = Visibility.Collapsed;
+                        ChiParameters.Visibility = Visibility.Visible;
+                        GammaParameters.Visibility = Visibility.Collapsed;
+                        NormalParameters.Visibility = Visibility.Collapsed;
+                        UniformParameters.Visibility = Visibility.Collapsed;
+                        break;
+                    case 2:
+                        BetaParameters.Visibility = Visibility.Collapsed;
+                        ChiParameters.Visibility = Visibility.Collapsed;
+                        GammaParameters.Visibility = Visibility.Visible;
+                        NormalParameters.Visibility = Visibility.Collapsed;
+                        UniformParameters.Visibility = Visibility.Collapsed;
+                        break;
+                    case 3:
+                        BetaParameters.Visibility = Visibility.Collapsed;
+                        ChiParameters.Visibility = Visibility.Collapsed;
+                        GammaParameters.Visibility = Visibility.Collapsed;
+                        NormalParameters.Visibility = Visibility.Visible;
+                        UniformParameters.Visibility = Visibility.Collapsed;
+                        break;
+                    case 4:
+                        BetaParameters.Visibility = Visibility.Collapsed;
+                        ChiParameters.Visibility = Visibility.Collapsed;
+                        GammaParameters.Visibility = Visibility.Collapsed;
+                        NormalParameters.Visibility = Visibility.Collapsed;
+                        UniformParameters.Visibility = Visibility.Visible;
+                        break;
+                }
+            }
+            
+        }
+
+        private void GenerateIndividual_Click(object sender, RoutedEventArgs e)
+        {
+            var xCount = int.Parse(XCountRandom.Text);
+            var alternativesCount = int.Parse(AltCountRandom.Text);
+            var constraintsCount = int.Parse(ConstraintCountRandom.Text);
+            var optDirection = OptDirectionComboBoxRandom.SelectedIndex == 0 ? "max" : "min";
+            var distributionTypeIndex = DistributionType.SelectedIndex;
+            CustomDistribution distribution;
+            switch (distributionTypeIndex)
+            {
+                case 0: distribution = new BetaDistribution(double.Parse(BetaA.Text), double.Parse(BetaB.Text)); break;
+                case 1: distribution = new ChiDistribution(int.Parse(ChiK.Text)); break;
+                case 2: distribution = new GammaDistribution(double.Parse(GammaShape.Text), double.Parse(GammaRate.Text)); break;
+                case 3: distribution = new NormalDistribution(double.Parse(NormalMean.Text), double.Parse(NormalStdDev.Text)); break;
+                case 4: distribution = new UniformDistribution(double.Parse(UniformMin.Text), double.Parse(UniformMax.Text)); break;
+                default: distribution = new NormalDistribution(double.Parse(NormalMean.Text), double.Parse(NormalStdDev.Text)); break;
+            }
+            _viewModel.GenerateIndividualProblem(xCount, alternativesCount, constraintsCount, optDirection, distribution);
+            ResultsSaveStackPanel.Visibility = Visibility.Visible;
+        }
+
+        private async void Save_Click(object sender, RoutedEventArgs e)
+        {
+            if(TypeOfInput.SelectedIndex == 0)
+            {
+                var xCount = int.Parse(XCount.Text);
+                var alternativesCount = int.Parse(EnumeratorCount.Text);
+                var constraintsCount = int.Parse(ConstraintCount.Text);
+                var optDirection = OptDirectionComboBox.SelectedIndex;
+                var distributionTypeIndex = -1;
+                _viewModel.SaveIndividualProblem(xCount, alternativesCount, constraintsCount, optDirection, distributionTypeIndex,Comment.Text);
+            }
+            else
+            {
+                var xCount = int.Parse(XCountRandom.Text);
+                var alternativesCount = int.Parse(AltCountRandom.Text);
+                var constraintsCount = int.Parse(ConstraintCountRandom.Text);
+                var optDirection = OptDirectionComboBoxRandom.SelectedIndex;
+                var distributionTypeIndex = DistributionType.SelectedIndex;
+                _viewModel.SaveIndividualProblem(xCount, alternativesCount, constraintsCount, optDirection, distributionTypeIndex, Comment.Text);
+            }
+            var messageDialog = new MessageDialog("Задача успішно збережена");
+            await messageDialog.ShowAsync();
         }
     }
 }

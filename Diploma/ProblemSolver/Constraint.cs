@@ -32,5 +32,17 @@ namespace ProblemSolver
             }
             return coefs + SymbolEnum.ToDescriptionString() + " " + FreeValue;
         }
+
+        public List<string> ToStringList()
+        {
+            var result = new List<string>();
+            foreach(var coef in Coefficients)
+            {
+                result.Add(coef.ToString());
+            }
+            result.Add(SymbolEnum.ToDescriptionString());
+            result.Add(FreeValue.ToString());
+            return result;
+        }
     }
 }

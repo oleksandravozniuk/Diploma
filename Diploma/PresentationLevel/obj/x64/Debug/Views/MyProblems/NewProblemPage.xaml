@@ -10,51 +10,113 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel Margin="5,0,0,0">
-            <TextBlock Text="Кількість змінних"></TextBlock>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:ConnectionId='23' x:Name="XCount">0</TextBlock>
-                <Button x:ConnectionId='24' x:Name="IncrementX"                         >
-                    <SymbolIcon Symbol="Add" />
-                </Button>
-                <Button x:ConnectionId='25' x:Name="DecrementX"                         >
-                    <SymbolIcon Symbol="Remove" />
-                </Button>
+        <StackPanel>
+            <StackPanel>
+                <muxc:RadioButtons x:ConnectionId='6' Name="TypeOfInput" Header="Тип введення даних" SelectedIndex="0"                                                >
+                    <x:String>Ручний ввід</x:String>
+                    <x:String>Випадкова генерація</x:String>
+                </muxc:RadioButtons>
+                <StackPanel x:ConnectionId='7' x:Name="ManualInput" Margin="5,0,0,0">
+                    <TextBlock Text="Кількість змінних"></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:ConnectionId='61' x:Name="XCount">0</TextBlock>
+                        <Button x:ConnectionId='62' x:Name="IncrementX"                         >
+                            <SymbolIcon Symbol="Add" />
+                        </Button>
+                        <Button x:ConnectionId='63' x:Name="DecrementX"                         >
+                            <SymbolIcon Symbol="Remove" />
+                        </Button>
+                    </StackPanel>
+                    <ComboBox x:ConnectionId='41' x:Name="OptDirectionComboBox" Header="Напрямок оптимізації" Width="200" SelectedIndex="0">
+                        <x:String>Max</x:String>
+                        <x:String>Min</x:String>
+                    </ComboBox>
+                    <StackPanel x:ConnectionId='42' x:Name="EnumeratorStackPanel" Orientation="Horizontal">
+                        <TextBlock x:ConnectionId='57' x:Name="EnumeratorTitle"></TextBlock>
+                        <TextBlock x:ConnectionId='58' x:Name="EnumeratorCount"></TextBlock>
+                        <Button x:ConnectionId='59' x:Name="IncreaseEnumeratorCountButton"                                       Visibility="Collapsed">
+                            <SymbolIcon Symbol="Add" />
+                        </Button>
+                        <Button x:ConnectionId='60' x:Name="DecreaseEnumeratorCountButton"                                       Visibility="Collapsed">
+                            <SymbolIcon Symbol="Remove" />
+                        </Button>
+                    </StackPanel>
+                    <StackPanel x:ConnectionId='43' x:Name="Enumerators" Orientation="Vertical"></StackPanel>
+                    <TextBlock x:ConnectionId='44' x:Name="DenominatorTitle"></TextBlock>
+                    <StackPanel x:ConnectionId='45' x:Name="Denominators" Orientation="Horizontal"></StackPanel>
+                    <StackPanel x:ConnectionId='46' x:Name="ConstraintStackPanel" Orientation="Horizontal">
+                        <TextBlock x:ConnectionId='53' x:Name="ConstraintTitle"></TextBlock>
+                        <TextBlock x:ConnectionId='54' x:Name="ConstraintCount"></TextBlock>
+                        <Button x:ConnectionId='55' x:Name="IncreaseConstraintCountButton"                                       Visibility="Collapsed">
+                            <SymbolIcon Symbol="Add" />
+                        </Button>
+                        <Button x:ConnectionId='56' x:Name="DecreaseConstraintCountButton"                                       Visibility="Collapsed">
+                            <SymbolIcon Symbol="Remove" />
+                        </Button>
+                    </StackPanel>
+                    <StackPanel x:ConnectionId='47' x:Name="Constraints" Orientation="Vertical"></StackPanel>
+                    <TextBlock x:ConnectionId='48' x:Name="WeightsTitle"></TextBlock>
+                    <StackPanel x:ConnectionId='49' x:Name="Ws" Orientation="Horizontal"></StackPanel>
+                    <TextBlock x:ConnectionId='50' x:Name="LsTitle"></TextBlock>
+                    <StackPanel x:ConnectionId='51' x:Name="Ls" Orientation="Horizontal"></StackPanel>
+                    <Button x:ConnectionId='52' x:Name="SolveButton" Visibility="Collapsed"                    >Розв'язати</Button>
+                </StackPanel>
+                <StackPanel x:ConnectionId='8' x:Name="RandomInput" Margin="5,0,0,0" Visibility="Collapsed">
+                    <TextBlock x:ConnectionId='9' x:Name="XCountRandomTitle">Кількість змінних</TextBlock>
+                    <TextBox x:ConnectionId='10' x:Name="XCountRandom" Width="100" HorizontalAlignment="Left"></TextBox>
+                    <TextBlock x:ConnectionId='11' x:Name="AltCountRandomTitle">Кількість альтернатив</TextBlock>
+                    <TextBox x:ConnectionId='12' x:Name="AltCountRandom" Width="100" HorizontalAlignment="Left"></TextBox>
+                    <TextBlock x:ConnectionId='13' x:Name="ConstraintCountRandomTitle">Кількість обмежень</TextBlock>
+                    <TextBox x:ConnectionId='14' x:Name="ConstraintCountRandom" Width="100" HorizontalAlignment="Left"></TextBox>
+                    <ComboBox x:ConnectionId='15' x:Name="OptDirectionComboBoxRandom" Header="Напрямок оптимізації" Width="200" SelectedIndex="0">
+                        <x:String>Max</x:String>
+                        <x:String>Min</x:String>
+                    </ComboBox>
+                    <ComboBox x:ConnectionId='16' x:Name="DistributionType" Header="Вид неперервного розподілу" SelectedIndex="3"                                                     >
+                        <x:String>Beta</x:String>
+                        <x:String>Chi</x:String>
+                        <x:String>Gamma</x:String>
+                        <x:String>Normal</x:String>
+                        <x:String>Uniform</x:String>
+                    </ComboBox>
+                    <StackPanel x:ConnectionId='17' x:Name="BetaParameters" Visibility="Collapsed">
+                        <TextBlock x:ConnectionId='37' x:Name="BetaATitle">A</TextBlock>
+                        <TextBox x:ConnectionId='38' x:Name="BetaA" Width="100" HorizontalAlignment="Left"></TextBox>
+                        <TextBlock x:ConnectionId='39' x:Name="BetaBTitle">B</TextBlock>
+                        <TextBox x:ConnectionId='40' x:Name="BetaB" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel x:ConnectionId='18' x:Name="ChiParameters" Visibility="Collapsed">
+                        <TextBlock x:ConnectionId='35' x:Name="ChiKTitle">k</TextBlock>
+                        <TextBox x:ConnectionId='36' x:Name="ChiK" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel x:ConnectionId='19' x:Name="GammaParameters" Visibility="Collapsed">
+                        <TextBlock x:ConnectionId='31' x:Name="GammaShapeTitle">Shape</TextBlock>
+                        <TextBox x:ConnectionId='32' x:Name="GammaShape" Width="100"></TextBox>
+                        <TextBlock x:ConnectionId='33' x:Name="GammaRateTitle">Rate</TextBlock>
+                        <TextBox x:ConnectionId='34' x:Name="GammaRate" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel x:ConnectionId='20' x:Name="NormalParameters" Visibility="Visible">
+                        <TextBlock x:ConnectionId='27' x:Name="NormalMeanTitle">Mean</TextBlock>
+                        <TextBox x:ConnectionId='28' x:Name="NormalMean" Width="100"></TextBox>
+                        <TextBlock x:ConnectionId='29' x:Name="NormalStdDevTitle">StdDev</TextBlock>
+                        <TextBox x:ConnectionId='30' x:Name="NormalStdDev" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel x:ConnectionId='21' x:Name="UniformParameters" Visibility="Collapsed">
+                        <TextBlock x:ConnectionId='23' x:Name="UniformMinTitle">Min</TextBlock>
+                        <TextBox x:ConnectionId='24' x:Name="UniformMin" Width="100"></TextBox>
+                        <TextBlock x:ConnectionId='25' x:Name="UniformMaxTitle">Max</TextBlock>
+                        <TextBox x:ConnectionId='26' x:Name="UniformMax" Width="100"></TextBox>
+                    </StackPanel>
+                    <Button x:ConnectionId='22' x:Name="GenerateIndividual" Visibility="Visible"                                 >Згенерувати</Button>
+                </StackPanel>
             </StackPanel>
-            <ComboBox x:ConnectionId='2' x:Name="OptDirectionComboBox" Header="Напрямок оптимізації" Width="200" SelectedIndex="0">
-                <x:String>Max</x:String>
-                <x:String>Min</x:String>
-            </ComboBox>
-            <StackPanel x:ConnectionId='3' x:Name="EnumeratorStackPanel" Orientation="Horizontal">
-                <TextBlock x:ConnectionId='19' x:Name="EnumeratorTitle"></TextBlock>
-                <TextBlock x:ConnectionId='20' x:Name="EnumeratorCount"></TextBlock>
-                <Button x:ConnectionId='21' x:Name="IncreaseEnumeratorCountButton"                                       Visibility="Collapsed">
-                    <SymbolIcon Symbol="Add" />
-                </Button>
-                <Button x:ConnectionId='22' x:Name="DecreaseEnumeratorCountButton"                                       Visibility="Collapsed">
-                    <SymbolIcon Symbol="Remove" />
-                </Button>
+            <StackPanel x:ConnectionId='2' x:Name="ResultsSaveStackPanel" Visibility="Collapsed">
+                <TextBlock>"Розв'язок знайдено!"</TextBlock>
+                <TextBlock x:ConnectionId='3' x:Name="SolutionTextBlock" Text="{Binding ProblemSolution}"></TextBlock>
+                <TextBlock>Коментар</TextBlock>
+                <TextBox x:ConnectionId='4' Name="Comment" Width="400" Height="200"></TextBox>
+                <Button x:ConnectionId='5' x:Name="SaveButton"                   >Зберегти</Button>
             </StackPanel>
-            <StackPanel x:ConnectionId='4' x:Name="Enumerators" Orientation="Vertical"></StackPanel>
-            <TextBlock x:ConnectionId='5' x:Name="DenominatorTitle"></TextBlock>
-            <StackPanel x:ConnectionId='6' x:Name="Denominators" Orientation="Horizontal"></StackPanel>
-            <StackPanel x:ConnectionId='7' x:Name="ConstraintStackPanel" Orientation="Horizontal">
-                <TextBlock x:ConnectionId='15' x:Name="ConstraintTitle"></TextBlock>
-                <TextBlock x:ConnectionId='16' x:Name="ConstraintCount"></TextBlock>
-                <Button x:ConnectionId='17' x:Name="IncreaseConstraintCountButton"                                       Visibility="Collapsed">
-                    <SymbolIcon Symbol="Add" />
-                </Button>
-                <Button x:ConnectionId='18' x:Name="DecreaseConstraintCountButton"                                       Visibility="Collapsed">
-                    <SymbolIcon Symbol="Remove" />
-                </Button>
-            </StackPanel>
-            <StackPanel x:ConnectionId='8' x:Name="Constraints" Orientation="Vertical"></StackPanel>
-            <TextBlock x:ConnectionId='9' x:Name="WeightsTitle"></TextBlock>
-            <StackPanel x:ConnectionId='10' x:Name="Ws" Orientation="Horizontal"></StackPanel>
-            <TextBlock x:ConnectionId='11' x:Name="LsTitle"></TextBlock>
-            <StackPanel x:ConnectionId='12' x:Name="Ls" Orientation="Horizontal"></StackPanel>
-            <Button x:ConnectionId='13' x:Name="SolveButton" Visibility="Collapsed"                    >Розв'язати</Button>
-            <TextBlock x:ConnectionId='14' x:Name="SolutionTextBlock" Text="{Binding ProblemSolution}"></TextBlock>
         </StackPanel>
     </Grid>
 </Page>

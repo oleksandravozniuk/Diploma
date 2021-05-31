@@ -24,13 +24,13 @@
             <SplitView.Pane>
                 <ListBox SelectionMode="Single" SelectionChanged="ListBox_SelectionChanged" Background="#1F2937">
                     <ListBoxItem Name="Main">
-                        <TextBlock Text="Main Page"/>
+                        <TextBlock Text="Головна" Foreground="Azure"/>
                     </ListBoxItem>
                     <ListBoxItem Name="MyProblems">
-                        <TextBlock Text="My Problems"/>
+                        <TextBlock Text="Мої задачі" Foreground="Azure"/>
                     </ListBoxItem>
                     <ListBoxItem Name="MyResearches">
-                        <TextBlock Text="My Researches"/>
+                        <TextBlock Text="Мої дослідження" Foreground="Azure"/>
                     </ListBoxItem>
                 </ListBox>
             </SplitView.Pane>

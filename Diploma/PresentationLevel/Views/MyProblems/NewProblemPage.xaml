@@ -10,51 +10,113 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel Margin="5,0,0,0">
-            <TextBlock Text="Кількість змінних"></TextBlock>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="XCount">0</TextBlock>
-                <Button x:Name="IncrementX" Click="IncrementX_Click">
-                    <SymbolIcon Symbol="Add" />
-                </Button>
-                <Button x:Name="DecrementX" Click="DecrementX_Click">
-                    <SymbolIcon Symbol="Remove" />
-                </Button>
+        <StackPanel>
+            <StackPanel>
+                <muxc:RadioButtons Name="TypeOfInput" Header="Тип введення даних" SelectedIndex="0" SelectionChanged="TypeOfInput_SelectionChanged">
+                    <x:String>Ручний ввід</x:String>
+                    <x:String>Випадкова генерація</x:String>
+                </muxc:RadioButtons>
+                <StackPanel x:Name="ManualInput" Margin="5,0,0,0">
+                    <TextBlock Text="Кількість змінних"></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="XCount">0</TextBlock>
+                        <Button x:Name="IncrementX" Click="IncrementX_Click">
+                            <SymbolIcon Symbol="Add" />
+                        </Button>
+                        <Button x:Name="DecrementX" Click="DecrementX_Click">
+                            <SymbolIcon Symbol="Remove" />
+                        </Button>
+                    </StackPanel>
+                    <ComboBox x:Name="OptDirectionComboBox" Header="Напрямок оптимізації" Width="200" SelectedIndex="0">
+                        <x:String>Max</x:String>
+                        <x:String>Min</x:String>
+                    </ComboBox>
+                    <StackPanel x:Name="EnumeratorStackPanel" Orientation="Horizontal">
+                        <TextBlock x:Name="EnumeratorTitle"></TextBlock>
+                        <TextBlock x:Name="EnumeratorCount"></TextBlock>
+                        <Button x:Name="IncreaseEnumeratorCountButton" Click="IncreaseEnumeratorCount_Click" Visibility="Collapsed">
+                            <SymbolIcon Symbol="Add" />
+                        </Button>
+                        <Button x:Name="DecreaseEnumeratorCountButton" Click="DecreaseEnumeratorCount_Click" Visibility="Collapsed">
+                            <SymbolIcon Symbol="Remove" />
+                        </Button>
+                    </StackPanel>
+                    <StackPanel x:Name="Enumerators" Orientation="Vertical"></StackPanel>
+                    <TextBlock x:Name="DenominatorTitle"></TextBlock>
+                    <StackPanel x:Name="Denominators" Orientation="Horizontal"></StackPanel>
+                    <StackPanel x:Name="ConstraintStackPanel" Orientation="Horizontal">
+                        <TextBlock x:Name="ConstraintTitle"></TextBlock>
+                        <TextBlock x:Name="ConstraintCount"></TextBlock>
+                        <Button x:Name="IncreaseConstraintCountButton" Click="IncreaseConstraintCount_Click" Visibility="Collapsed">
+                            <SymbolIcon Symbol="Add" />
+                        </Button>
+                        <Button x:Name="DecreaseConstraintCountButton" Click="DecreaseConstraintCount_Click" Visibility="Collapsed">
+                            <SymbolIcon Symbol="Remove" />
+                        </Button>
+                    </StackPanel>
+                    <StackPanel x:Name="Constraints" Orientation="Vertical"></StackPanel>
+                    <TextBlock x:Name="WeightsTitle"></TextBlock>
+                    <StackPanel x:Name="Ws" Orientation="Horizontal"></StackPanel>
+                    <TextBlock x:Name="LsTitle"></TextBlock>
+                    <StackPanel x:Name="Ls" Orientation="Horizontal"></StackPanel>
+                    <Button x:Name="SolveButton" Visibility="Collapsed" Click="Solve_Click">Розв'язати</Button>
+                </StackPanel>
+                <StackPanel x:Name="RandomInput" Margin="5,0,0,0" Visibility="Collapsed">
+                    <TextBlock x:Name="XCountRandomTitle">Кількість змінних</TextBlock>
+                    <TextBox x:Name="XCountRandom" Width="100" HorizontalAlignment="Left"></TextBox>
+                    <TextBlock x:Name="AltCountRandomTitle">Кількість альтернатив</TextBlock>
+                    <TextBox x:Name="AltCountRandom" Width="100" HorizontalAlignment="Left"></TextBox>
+                    <TextBlock x:Name="ConstraintCountRandomTitle">Кількість обмежень</TextBlock>
+                    <TextBox x:Name="ConstraintCountRandom" Width="100" HorizontalAlignment="Left"></TextBox>
+                    <ComboBox x:Name="OptDirectionComboBoxRandom" Header="Напрямок оптимізації" Width="200" SelectedIndex="0">
+                        <x:String>Max</x:String>
+                        <x:String>Min</x:String>
+                    </ComboBox>
+                    <ComboBox x:Name="DistributionType" Header="Вид неперервного розподілу" SelectedIndex="3" SelectionChanged="DistributionType_SelectionChanged">
+                        <x:String>Beta</x:String>
+                        <x:String>Chi</x:String>
+                        <x:String>Gamma</x:String>
+                        <x:String>Normal</x:String>
+                        <x:String>Uniform</x:String>
+                    </ComboBox>
+                    <StackPanel x:Name="BetaParameters" Visibility="Collapsed">
+                        <TextBlock x:Name="BetaATitle">A</TextBlock>
+                        <TextBox x:Name="BetaA" Width="100" HorizontalAlignment="Left"></TextBox>
+                        <TextBlock x:Name="BetaBTitle">B</TextBlock>
+                        <TextBox x:Name="BetaB" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel x:Name="ChiParameters" Visibility="Collapsed">
+                        <TextBlock x:Name="ChiKTitle">k</TextBlock>
+                        <TextBox x:Name="ChiK" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel x:Name="GammaParameters" Visibility="Collapsed">
+                        <TextBlock x:Name="GammaShapeTitle">Shape</TextBlock>
+                        <TextBox x:Name="GammaShape" Width="100"></TextBox>
+                        <TextBlock x:Name="GammaRateTitle">Rate</TextBlock>
+                        <TextBox x:Name="GammaRate" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel x:Name="NormalParameters" Visibility="Visible">
+                        <TextBlock x:Name="NormalMeanTitle">Mean</TextBlock>
+                        <TextBox x:Name="NormalMean" Width="100"></TextBox>
+                        <TextBlock x:Name="NormalStdDevTitle">StdDev</TextBlock>
+                        <TextBox x:Name="NormalStdDev" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel x:Name="UniformParameters" Visibility="Collapsed">
+                        <TextBlock x:Name="UniformMinTitle">Min</TextBlock>
+                        <TextBox x:Name="UniformMin" Width="100"></TextBox>
+                        <TextBlock x:Name="UniformMaxTitle">Max</TextBlock>
+                        <TextBox x:Name="UniformMax" Width="100"></TextBox>
+                    </StackPanel>
+                    <Button x:Name="GenerateIndividual" Visibility="Visible" Click="GenerateIndividual_Click">Згенерувати</Button>
+                </StackPanel>
             </StackPanel>
-            <ComboBox x:Name="OptDirectionComboBox" Header="Напрямок оптимізації" Width="200" SelectedIndex="0">
-                <x:String>Max</x:String>
-                <x:String>Min</x:String>
-            </ComboBox>
-            <StackPanel x:Name="EnumeratorStackPanel" Orientation="Horizontal">
-                <TextBlock x:Name="EnumeratorTitle"></TextBlock>
-                <TextBlock x:Name="EnumeratorCount"></TextBlock>
-                <Button x:Name="IncreaseEnumeratorCountButton" Click="IncreaseEnumeratorCount_Click" Visibility="Collapsed">
-                    <SymbolIcon Symbol="Add" />
-                </Button>
-                <Button x:Name="DecreaseEnumeratorCountButton" Click="DecreaseEnumeratorCount_Click" Visibility="Collapsed">
-                    <SymbolIcon Symbol="Remove" />
-                </Button>
+            <StackPanel x:Name="ResultsSaveStackPanel" Visibility="Collapsed">
+                <TextBlock>"Розв'язок знайдено!"</TextBlock>
+                <TextBlock x:Name="SolutionTextBlock" Text="{Binding ProblemSolution}"></TextBlock>
+                <TextBlock>Коментар</TextBlock>
+                <TextBox Name="Comment" Width="400" Height="200"></TextBox>
+                <Button x:Name="SaveButton" Click="Save_Click">Зберегти</Button>
             </StackPanel>
-            <StackPanel x:Name="Enumerators" Orientation="Vertical"></StackPanel>
-            <TextBlock x:Name="DenominatorTitle"></TextBlock>
-            <StackPanel x:Name="Denominators" Orientation="Horizontal"></StackPanel>
-            <StackPanel x:Name="ConstraintStackPanel" Orientation="Horizontal">
-                <TextBlock x:Name="ConstraintTitle"></TextBlock>
-                <TextBlock x:Name="ConstraintCount"></TextBlock>
-                <Button x:Name="IncreaseConstraintCountButton" Click="IncreaseConstraintCount_Click" Visibility="Collapsed">
-                    <SymbolIcon Symbol="Add" />
-                </Button>
-                <Button x:Name="DecreaseConstraintCountButton" Click="DecreaseConstraintCount_Click" Visibility="Collapsed">
-                    <SymbolIcon Symbol="Remove" />
-                </Button>
-            </StackPanel>
-            <StackPanel x:Name="Constraints" Orientation="Vertical"></StackPanel>
-            <TextBlock x:Name="WeightsTitle"></TextBlock>
-            <StackPanel x:Name="Ws" Orientation="Horizontal"></StackPanel>
-            <TextBlock x:Name="LsTitle"></TextBlock>
-            <StackPanel x:Name="Ls" Orientation="Horizontal"></StackPanel>
-            <Button x:Name="SolveButton" Visibility="Collapsed" Click="Solve_Click">Розв'язати</Button>
-            <TextBlock x:Name="SolutionTextBlock" Text="{Binding ProblemSolution}"></TextBlock>
         </StackPanel>
     </Grid>
 </Page>

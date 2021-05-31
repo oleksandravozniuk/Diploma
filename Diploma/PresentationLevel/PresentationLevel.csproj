@@ -121,9 +121,9 @@
     </Compile>
     <Compile Include="Mappers\IMapper.cs" />
     <Compile Include="Mappers\Mapper.cs" />
-    <Compile Include="Models\ProblemResult.cs" />
-    <Compile Include="Services\IResearch.cs" />
-    <Compile Include="Services\Research.cs" />
+    <Compile Include="Models\ChartValue.cs" />
+    <Compile Include="ViewModels\MyProblemsListPageViewModel.cs" />
+    <Compile Include="ViewModels\MyProblemsViewModel.cs" />
     <Compile Include="ViewModels\NewProblemInputViewModel.cs" />
     <Compile Include="ViewModels\NewResearchInputViewModel.cs" />
     <Compile Include="Views\GeneralNavigationPage.xaml.cs">
@@ -179,6 +179,12 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="LiveCharts">
+      <Version>0.9.7</Version>
+    </PackageReference>
+    <PackageReference Include="LiveCharts.Uwp">
+      <Version>0.8.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection">
       <Version>5.0.1</Version>
     </PackageReference>
@@ -187,6 +193,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="Syncfusion.SfChart.UWP">
+      <Version>19.1.0.65</Version>
     </PackageReference>
     <PackageReference Include="System.Collections.NonGeneric">
       <Version>4.3.0</Version>
@@ -238,6 +247,18 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CSVManager\CSVManager.csproj">
+      <Project>{769D9C6A-27D7-45FB-9D6D-43A314BFD12C}</Project>
+      <Name>CSVManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProblemGenerator\ProblemGenerator.csproj">
+      <Project>{A881558E-A649-4919-AFD4-F9855C428639}</Project>
+      <Name>ProblemGenerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProblemManager\ProblemManager.csproj">
+      <Project>{1B084FDE-A37C-4D1A-BB91-31E2552A772B}</Project>
+      <Name>ProblemManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProblemSolver\ProblemSolver.csproj">
       <Project>{9e4e0d90-83a7-47b3-aa6b-62190ff93b44}</Project>
       <Name>ProblemSolver</Name>

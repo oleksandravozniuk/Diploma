@@ -1,6 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CSVManager;
+using CSVManager.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using PresentationLevel.Mappers;
 using PresentationLevel.Pages;
+using ProblemGenerator;
+using ProblemGenerator.Interfaces;
+using ProblemManager;
+using ProblemManager.Intefaces;
+using ProblemManager.Services;
 using ProblemSolver;
 using System;
 using System.Collections.Generic;
@@ -35,6 +42,7 @@ namespace PresentationLevel
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             Container = ConfigureDependencyInjection();
+            DbAccessor.RubDb();
         }
 
         public IServiceProvider Container { get; }
@@ -45,7 +53,10 @@ namespace PresentationLevel
 
             serviceCollection.AddTransient<IMapper, Mapper>();
             serviceCollection.AddTransient<ISolveHelper, SolveHelper>();
-
+            serviceCollection.AddTransient<IResearchesService, ResearchesService>();
+            serviceCollection.AddTransient<IDataWriter, DataWriter>();
+            serviceCollection.AddTransient<IGenerateService, GenerateService>();
+            serviceCollection.AddTransient<IIndividualProblemsService, IndividualProblemsService>();
             return serviceCollection.BuildServiceProvider();
         }
 

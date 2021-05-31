@@ -6,8 +6,12 @@ using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using ProblemSolver;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+using PresentationLevel.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using LiveCharts;
+using LiveCharts.Uwp;
+using Syncfusion.UI.Xaml.Charts;
+using PresentationLevel.Models;
 
 namespace PresentationLevel.Views.MyResearches
 {
@@ -16,9 +20,15 @@ namespace PresentationLevel.Views.MyResearches
     /// </summary>
     public sealed partial class NewResearchPage : Page
     {
+        private bool lDependency = true;
+        private readonly NewResearchInputViewModel _viewModel;
+        private List<ChartValue> StatResults;
+        public SeriesCollection SeriesCollection { get; set; }
         public NewResearchPage()
         {
             this.InitializeComponent();
+            var container = ((App)Application.Current).Container;
+            _viewModel = (NewResearchInputViewModel)ActivatorUtilities.GetServiceOrCreateInstance(container, typeof(NewResearchInputViewModel));
         }
         private void IncreaseConstraintCount_Click(object sender, RoutedEventArgs e)
         {
@@ -58,11 +68,32 @@ namespace PresentationLevel.Views.MyResearches
             Enumerators.Children.Add(newStackPanel);
 
             EnumeratorCount.Text = Enumerators.Children.Count.ToString();
+
+            if (lDependency)
+            {
+                IncreaseXCount(Ws2, 1);
+                Ls1.Children.Add(GetNewBound());
+            }
+            else
+            {
+                IncreaseXCount(Ls2, 1);
+                Ws1.Children.Add(GetNewBound());
+            }
         }
         private void DecreaseEnumeratorCount_Click(object sender, RoutedEventArgs e)
         {
             Enumerators.Children.Remove(Enumerators.Children.Last());
             EnumeratorCount.Text = Enumerators.Children.Count.ToString();
+            if (lDependency)
+            {
+                DecreaseXCount(Ws2, 1);
+                Ls1.Children.Remove(Ls1.Children.Last());
+            }
+            else
+            {
+                DecreaseXCount(Ws2, 1);
+                Ls1.Children.Remove(Ls1.Children.Last());
+            }  
         }
         private void IncrementX_Click(object sender, RoutedEventArgs e)
         {
@@ -108,9 +139,6 @@ namespace PresentationLevel.Views.MyResearches
                 IncreaseXCount((StackPanel)((StackPanel)constraint).Children.First(), 1);
             }
 
-            Ws.Children.Add(GetNewBound());
-            Ls.Children.Add(GetNewBound());
-
             var x = int.Parse(XCount.Text);
             if (x == 0)
             {
@@ -119,6 +147,16 @@ namespace PresentationLevel.Views.MyResearches
                 IncreaseConstraintCountButton.Visibility = Visibility.Visible;
                 DecreaseEnumeratorCountButton.Visibility = Visibility.Visible;
                 DecreaseConstraintCountButton.Visibility = Visibility.Visible;
+                if (lDependency)
+                {
+                    IncreaseXCount(Ws2, 1);
+                    Ls1.Children.Add(GetNewBound());
+                }
+                else
+                {
+                    IncreaseXCount(Ls2, 1);
+                    Ws1.Children.Add(GetNewBound());
+                }
             }
             XCount.Text = (x + 1).ToString();
 
@@ -136,6 +174,16 @@ namespace PresentationLevel.Views.MyResearches
                     IncreaseConstraintCountButton.Visibility = Visibility.Collapsed;
                     DecreaseEnumeratorCountButton.Visibility = Visibility.Collapsed;
                     DecreaseConstraintCountButton.Visibility = Visibility.Collapsed;
+                    if (lDependency)
+                    {
+                        DecreaseXCount(Ws2, 1);
+                        Ls1.Children.Remove(Ls1.Children.Last());
+                    }
+                    else
+                    {
+                        DecreaseXCount(Ws2, 1);
+                        Ls1.Children.Remove(Ls1.Children.Last());
+                    }
                 }
                 foreach (var enumerator in Enumerators.Children)
                 {
@@ -146,9 +194,6 @@ namespace PresentationLevel.Views.MyResearches
                 {
                     DecreaseXCount((StackPanel)((StackPanel)constraint).Children.First(), 1);
                 }
-
-                Ws.Children.Remove(Ws.Children.Last());
-                Ls.Children.Remove(Ls.Children.Last());
 
                 XCount.Text = (x - 1).ToString();
                 if (x - 1 == 0)
@@ -191,11 +236,6 @@ namespace PresentationLevel.Views.MyResearches
             LsTitle.Text = string.Empty;
             EnumeratorCount.Text = string.Empty;
             ConstraintCount.Text = string.Empty;
-        }
-
-        private void Solve_Click(object sender, RoutedEventArgs e)
-        {
-            //SolutionTextBlock.Text = _viewModel.SetProblemResult(GetInputEnumerators(), GetInputDenominator(), GetInputConstraints(), GetInputWs(), GetInputLs(), GetOptDirecton());
         }
 
         private List<List<double>> GetInputEnumerators()
@@ -243,21 +283,40 @@ namespace PresentationLevel.Views.MyResearches
             return constraintsList;
         }
 
-        private List<Tuple<double, double>> GetInputWs()
+        private List<Tuple<double, double>> GetInputWs1()
         {
-            var wsList = new List<Tuple<double,double>>();
-            foreach (var element in Ws.Children)
+            var wsList = new List<Tuple<double, double>>();
+            foreach (var element in Ws1.Children)
             {
-                wsList.Add(new Tuple<double,double>(double.Parse(((TextBox)((StackPanel)element).Children[0]).Text), double.Parse(((TextBox)((StackPanel)element).Children[1]).Text)));
+                wsList.Add(new Tuple<double, double>(double.Parse(((TextBox)((StackPanel)element).Children[1]).Text), double.Parse(((TextBox)((StackPanel)element).Children[3]).Text)));
             }
             return wsList;
         }
-        private List<Tuple<double, double>> GetInputLs()
+        private List<Tuple<double, double>> GetInputLs1()
         {
             var lsList = new List<Tuple<double, double>>();
-            foreach (var element in Ws.Children)
+            foreach (var element in Ls1.Children)
             {
-                lsList.Add(new Tuple<double, double>(double.Parse(((TextBox)((StackPanel)element).Children[0]).Text), double.Parse(((TextBox)((StackPanel)element).Children[1]).Text)));
+                lsList.Add(new Tuple<double, double>(double.Parse(((TextBox)((StackPanel)element).Children[1]).Text), double.Parse(((TextBox)((StackPanel)element).Children[3]).Text)));
+            }
+            return lsList;
+        }
+
+        private List<double> GetInputWs2()
+        {
+            var wsList = new List<double>();
+            foreach (var element in Ws2.Children)
+            {
+                wsList.Add(double.Parse(((TextBox)element).Text));
+            }
+            return wsList;
+        }
+        private List<double> GetInputLs2()
+        {
+            var lsList = new List<double>();
+            foreach (var element in Ls2.Children)
+            {
+                lsList.Add(double.Parse(((TextBox)element).Text));
             }
             return lsList;
         }
@@ -266,6 +325,7 @@ namespace PresentationLevel.Views.MyResearches
         {
             return OptDirectionComboBox.SelectedItem.ToString();
         }
+
         public SymbolEnum MapSymbol(string symbol)
         {
             switch (symbol)
@@ -298,7 +358,87 @@ namespace PresentationLevel.Views.MyResearches
 
         private void Research_Click(object sender, RoutedEventArgs e)
         {
+            int selectedExperimentType = ExperimentTypeComboBox.SelectedIndex;
+            var result = new List<List<ChartValue>>();
 
+            switch (selectedExperimentType)
+            {
+                case 0: result = _viewModel.GetZFromLChartValues(GetInputEnumerators(), GetInputDenominator(), GetInputConstraints(), GetInputWs2(), GetInputLs1().Select(x => x.Item1).ToList(), GetOptDirecton(), GetInputLs1(), int.Parse(ExperimentsCount.Text)); break;
+                case 1: result = _viewModel.GetZFromWChartValues(GetInputEnumerators(), GetInputDenominator(), GetInputConstraints(), GetInputWs1().Select(x => x.Item1).ToList(), GetInputLs2(), GetOptDirecton(), GetInputWs1(), int.Parse(ExperimentsCount.Text)); break;
+                case 2: result = _viewModel.GetZFromLChartValues(GetInputEnumerators(), GetInputDenominator(), GetInputConstraints(), GetInputWs2(), GetInputLs1().Select(x => x.Item1).ToList(), GetOptDirecton(), GetInputLs1(), int.Parse(ExperimentsCount.Text)); break;
+                case 3: result = _viewModel.GetZFromWChartValues(GetInputEnumerators(), GetInputDenominator(), GetInputConstraints(), GetInputWs1().Select(x => x.Item1).ToList(), GetInputLs2(), GetOptDirecton(), GetInputWs1(), int.Parse(ExperimentsCount.Text)); break;
+                default: result = _viewModel.GetZFromLChartValues(GetInputEnumerators(), GetInputDenominator(), GetInputConstraints(), GetInputWs2(), GetInputLs1().Select(x => x.Item1).ToList(), GetOptDirecton(), GetInputLs1(), int.Parse(ExperimentsCount.Text)); break;
+            }
+            //result.Add(new List<ChartValue>() { new ChartValue() { X = 1, Y = 2 }, new ChartValue() { X = 2, Y = 1 } });
+
+            for (int i = 0; i<result.Count;i++)
+            {
+                if (lDependency)
+                {
+                    SplineSeries series = new SplineSeries()
+                    {
+                        ItemsSource = result[i],
+                        XBindingPath = "X",
+                        YBindingPath = "Y"
+                    };
+                    Chart.Series.Add(series);
+                }
+                else
+                {
+                    SplineSeries series = new SplineSeries()
+                    {
+                        ItemsSource = result[i],
+                        XBindingPath = "X",
+                        YBindingPath = "Y"
+                    };
+                    Chart.Series.Add(series);
+                }
+            }
+        }
+
+        private void ExperimentType_Click(object sender, SelectionChangedEventArgs e)
+        {
+            int index = ExperimentTypeComboBox.SelectedIndex;
+            if (index == 0 || index == 2)
+            {
+                if(Ws1 != null)
+                {
+                    Ws1.Visibility = Visibility.Collapsed;
+                }
+                if (Ws2 != null)
+                {
+                    Ws2.Visibility = Visibility.Visible;
+                }
+                if(Ls1 != null)
+                {
+                    Ls1.Visibility = Visibility.Visible;
+                }
+                if(Ls2!=null)
+                {
+                    Ls2.Visibility = Visibility.Collapsed;
+                }
+                lDependency = true;
+            }
+            else
+            {
+                if (Ws1 != null)
+                {
+                    Ws1.Visibility = Visibility.Visible;
+                }
+                if (Ws2 != null)
+                {
+                    Ws2.Visibility = Visibility.Collapsed;
+                }
+                if (Ls1 != null)
+                {
+                    Ls1.Visibility = Visibility.Collapsed;
+                }
+                if (Ls2 != null)
+                {
+                    Ls2.Visibility = Visibility.Visible;
+                }
+                lDependency = false;
+            }
         }
     }
 }
